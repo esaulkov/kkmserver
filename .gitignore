@@ -1,0 +1,13 @@
+*.gem
+*.rbc
+.bundle
+.config
+.env
+.ruby-gemset
+.ruby-version
+.yardoc
+Gemfile.lock
+tmp
+vendor
+.DS_Store
+Readme.md
