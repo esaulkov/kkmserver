@@ -9,5 +9,12 @@ module Kkmserver
         instance_variable_set("@#{var_name}", value)
       end
     end
+
+    def state
+      Kkmserver.send_command(
+        'GetDataKKT',
+        {'NumDevice' => @num_device, 'IdCommand' => SecureRandom.uuid}
+      )
+    end
   end
 end

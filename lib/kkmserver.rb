@@ -4,18 +4,16 @@
 require 'dotenv/load'
 require 'json'
 require 'rest-client'
+require 'securerandom'
 require 'kkmserver/cash_register'
 
 module Kkmserver
   URL = ENV['KKMSERVER_URL']
 
   def self.list(*filters)
-    response = send_command('List', filters)
-    if response.code == 200
-      result = JSON.parse(response.body)
-      result['ListUnit'].map do |reg_data|
-        Kkmserver::CashRegister.new(reg_data)
-      end
+    result = send_command('List', filters)
+    result['ListUnit'].map do |reg_data|
+      Kkmserver::CashRegister.new(reg_data)
     end
   end
 
@@ -26,6 +24,7 @@ module Kkmserver
   def self.send_command(command, options={})
     params = {'Command' => command}.merge(options.to_h)
     resource = RestClient::Resource.new(Kkmserver::URL, :user => 'Admin', :password => 'admin' )
-    resource.post params.to_json, {content_type: :json, accept: :json}
+    response = resource.post params.to_json, {content_type: :json, accept: :json}
+    JSON.parse(response.body)
   end
 end
