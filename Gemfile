@@ -13,5 +13,5 @@ gem 'rubocop', '~> 0.49.1', require: false
 
 group :development, :test do
   gem 'rake', '~> 10.4.2'
-  gem 'rspec', '~> 3.6.0'
+  gem 'rspec', '~> 3.7.0'
 end
