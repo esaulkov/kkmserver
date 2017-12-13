@@ -74,6 +74,24 @@ module Kkmserver
       )
     end
 
+    def x_report
+      result = Kkmserver.send_command(
+        'XReport',
+        'NumDevice' => @num_device,
+        'IdCommand' => SecureRandom.uuid
+      )
+      result['Status'].zero? ? true : result['Error']
+    end
+
+    def z_report
+      result = Kkmserver.send_command(
+        'ZReport',
+        'NumDevice' => @num_device,
+        'IdCommand' => SecureRandom.uuid
+      )
+      result['Status'].zero? ? result : result['Error']
+    end
+
     private
 
     def check_payments(values)

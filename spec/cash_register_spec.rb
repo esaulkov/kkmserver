@@ -119,4 +119,41 @@ describe Kkmserver::CashRegister do
       end
     end
   end
+
+  describe '#x_report' do
+    subject { register.x_report }
+
+    it 'returns true' do
+      VCR.use_cassette('x_report') do
+        expect(subject).to be_truthy
+      end
+    end
+  end
+
+  describe '#z_report' do
+    subject { register.z_report }
+
+    context 'when shift is open' do
+      it 'returns check number' do
+        VCR.use_cassette('z_report') do
+          expect(subject['CheckNumber']).to be_a(Integer)
+        end
+      end
+
+      it 'returns shift number' do
+        VCR.use_cassette('z_report') do
+          expect(subject['SessionNumber']).to be_a(Integer)
+        end
+      end
+    end
+
+    context 'when shift is closed' do
+      it 'returns error message' do
+        message = 'Ошибка регистрации ( 61 : ККТ: Смена не открыта или смена превысила 24 часа – операция невозможна )'
+        VCR.use_cassette('z_report_error') do
+          expect(subject).to eq(message)
+        end
+      end
+    end
+  end
 end
