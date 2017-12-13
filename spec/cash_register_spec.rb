@@ -166,4 +166,14 @@ describe Kkmserver::CashRegister do
       end
     end
   end
+
+  describe '#line_length' do
+    subject { register.line_length }
+
+    it 'returns a number' do
+      VCR.use_cassette('line_length') do
+        expect(subject).to be_a(Integer)
+      end
+    end
+  end
 end

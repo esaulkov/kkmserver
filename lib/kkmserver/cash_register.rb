@@ -38,6 +38,17 @@ module Kkmserver
       end
     end
 
+    def line_length
+      @line_length ||= begin
+        result = Kkmserver.send_command(
+          'GetLineLength',
+          'NumDevice' => @num_device,
+          'IdCommand' => SecureRandom.uuid
+        )
+        result['LineLength'] if result['Status'].zero?
+      end
+    end
+
     def open_cash_drawer
       result = Kkmserver.send_command(
         'OpenCashDrawer',
