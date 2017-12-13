@@ -156,4 +156,14 @@ describe Kkmserver::CashRegister do
       end
     end
   end
+
+  describe '#open_cash_drawer' do
+    subject { register.open_cash_drawer }
+
+    it 'returns true' do
+      VCR.use_cassette('open_cash_drawer') do
+        expect(subject).to be_truthy
+      end
+    end
+  end
 end

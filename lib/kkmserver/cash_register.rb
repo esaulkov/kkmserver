@@ -38,6 +38,15 @@ module Kkmserver
       end
     end
 
+    def open_cash_drawer
+      result = Kkmserver.send_command(
+        'OpenCashDrawer',
+        'NumDevice' => @num_device,
+        'IdCommand' => SecureRandom.uuid
+      )
+      result['Status'].zero? ? true : result['Error']
+    end
+
     def print_check(params)
       raise ArgumentError, 'Sum of payments should be non-zero' unless check_payments(params)
 
