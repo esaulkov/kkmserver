@@ -77,4 +77,46 @@ describe Kkmserver::CashRegister do
       end
     end
   end
+
+  describe '#depositing_cash' do
+    subject { register.depositing_cash(1.01) }
+
+    context 'when shift is open' do
+      it 'returns true' do
+        VCR.use_cassette('depositing_cash') do
+          expect(subject).to be_truthy
+        end
+      end
+    end
+
+    context 'when shift is closed' do
+      it 'returns error message' do
+        message = 'Ошибка регистрации ( 61 : ККТ: Смена не открыта или смена превысила 24 часа – операция невозможна )'
+        VCR.use_cassette('depositing_cash_error') do
+          expect(subject).to eq(message)
+        end
+      end
+    end
+  end
+
+  describe '#payment_cash' do
+    subject { register.payment_cash(0.65) }
+
+    context 'when shift is open' do
+      it 'returns true' do
+        VCR.use_cassette('payment_cash') do
+          expect(subject).to be_truthy
+        end
+      end
+    end
+
+    context 'when shift is closed' do
+      it 'returns error message' do
+        message = 'Ошибка регистрации ( 61 : ККТ: Смена не открыта или смена превысила 24 часа – операция невозможна )'
+        VCR.use_cassette('payment_cash_error') do
+          expect(subject).to eq(message)
+        end
+      end
+    end
+  end
 end

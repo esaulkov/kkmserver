@@ -1,0 +1,83 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: http://localhost:5893/Execute
+    body:
+      encoding: UTF-8
+      string: '{"Command":"List"}'
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - rest-client/2.0.2 (linux-gnu x86_64) ruby/2.4.0p0
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '18'
+      Host:
+      - localhost:5893
+      Authorization:
+      - Basic QWRtaW46YWRtaW4=
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Access-Control-Allow-Origin:
+      - "*"
+      Content-Type:
+      - application/json; charset=utf-8
+      Cache-Control:
+      - no-store, no-cache, must-revalidate
+      Content-Length:
+      - '2042'
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        eyJMaXN0VW5pdCI6W3siTnVtRGV2aWNlIjoxLCJJZERldmljZSI6ImVkNTY3Nzg2LWM0ZGYtNGViMy04MzY3LTQyZDJiYmFhYjc3MSIsIk9uT2ZmIjp0cnVlLCJBY3RpdmUiOnRydWUsIlR5cGVEZXZpY2UiOiLQpNC40YHQutCw0LvRjNC90YvQuSDRgNC10LPQuNGB0YLRgNCw0YLQvtGAIiwiSWRUeXBlRGV2aWNlIjoiS2t0RW11bGF0b3IiLCJJUCI6IjzQndC1INC+0L/RgNC10LTQtdC70LXQvdC+PiIsIk5hbWVEZXZpY2UiOiJLS1Qg0K3QvNGD0LvRj9GC0L7RgCIsIlVuaXROYW1lIjoiZm9vIiwiS2t0TnVtYmVyIjoiMTE0OTA2MDUwNjA4OTY1MSIsIklOTiI6Ijc3MDEyMzc2NTgiLCJSZWdOdW1iZXIiOiIxMDAwMDAwMDAzMDU2NDc4IiwiRm5OdW1iZXIiOiIxMTQ5MDYwNTA2MDg5NjUxIiwiSW5uT2ZkIjoiIiwiTmFtZU9yZ2FuaXphdGlvbiI6ItCe0J7QniBcItCS0LXQutGC0L7RgFwiIiwiVGF4VmFyaWFudCI6IiIsIkFkZERhdGUiOiIyMDE3LTA4LTI5VDA5OjIxOjA3IiwiT0ZEX0Vycm9yIjoiIiwiT0ZEX051bUVycm9yRG9jIjowLCJPRkRfRGF0ZUVycm9yRG9jIjoiMDAwMS0wMS0wMVQwMDowMDowMCIsIkZOX0RhdGVFbmQiOiIyMDE4LTEyLTEzVDAwOjAwOjAwIiwiRk5fTWVtT3ZlcmZsb3dsIjpmYWxzZSwiRk5fSXNGaXNjYWwiOmZhbHNlLCJQYXBlck92ZXIiOmZhbHNlfSx7Ik51bURldmljZSI6MiwiSWREZXZpY2UiOiJjYWJhNTU4Zi04MzM4LTRjOWYtODE5OC02YjVmMWI1MDgwMGQiLCJPbk9mZiI6dHJ1ZSwiQWN0aXZlIjp0cnVlLCJUeXBlRGV2aWNlIjoi0KTQuNGB0LrQsNC70YzQvdGL0Lkg0YDQtdCz0LjRgdGC0YDQsNGC0L7RgCIsIklkVHlwZURldmljZSI6IktrdEVtdWxhdG9yIiwiSVAiOiI80J3QtSDQvtC/0YDQtdC00LXQu9C10L3Qvj4iLCJOYW1lRGV2aWNlIjoiS0tUINCt0LzRg9C70Y/RgtC+0YAiLCJVbml0TmFtZSI6ImJhciIsIktrdE51bWJlciI6IjIxNDkwNjA1MDYwODk2NTEiLCJJTk4iOiI3NzAxMjM3NjU4IiwiUmVnTnVtYmVyIjoiMjAwMDAwMDAwMzA1NjQ3OCIsIkZuTnVtYmVyIjoiMjE0OTA2MDUwNjA4OTY1MSIsIklubk9mZCI6IiIsIk5hbWVPcmdhbml6YXRpb24iOiLQntCe0J4gXCLQktC10LrRgtC+0YBcIiIsIlRheFZhcmlhbnQiOiIwIiwiQWRkRGF0ZSI6IjIwMTctMDgtMjlUMDk6MjE6MDciLCJPRkRfRXJyb3IiOiIiLCJPRkRfTnVtRXJyb3JEb2MiOjAsIk9GRF9EYXRlRXJyb3JEb2MiOiIwMDAxLTAxLTAxVDAwOjAwOjAwIiwiRk5fRGF0ZUVuZCI6IjIwMTgtMTItMTNUMDA6MDA6MDAiLCJGTl9NZW1PdmVyZmxvd2wiOmZhbHNlLCJGTl9Jc0Zpc2NhbCI6dHJ1ZSwiUGFwZXJPdmVyIjpmYWxzZX0seyJOdW1EZXZpY2UiOjMsIklkRGV2aWNlIjoiYzBiY2FhZDQtYjk3Ny00NGQyLWI3MTYtMzdjMmViNDQ5OWM2IiwiT25PZmYiOnRydWUsIkFjdGl2ZSI6dHJ1ZSwiVHlwZURldmljZSI6ItCk0LjRgdC60LDQu9GM0L3Ri9C5INGA0LXQs9C40YHRgtGA0LDRgtC+0YAiLCJJZFR5cGVEZXZpY2UiOiJLa3RFbXVsYXRvciIsIklQIjoiPNCd0LUg0L7Qv9GA0LXQtNC10LvQtdC90L4+IiwiTmFtZURldmljZSI6IktLVCDQrdC80YPQu9GP0YLQvtGAIiwiVW5pdE5hbWUiOiJiYXoiLCJLa3ROdW1iZXIiOiIzMTQ5MDYwNTA2MDg5NjUxIiwiSU5OIjoiNzcwMTIzNzY1OCIsIlJlZ051bWJlciI6IjMwMDAwMDAwMDMwNTY0NzgiLCJGbk51bWJlciI6IjMxNDkwNjA1MDYwODk2NTEiLCJJbm5PZmQiOiIiLCJOYW1lT3JnYW5pemF0aW9uIjoi0J7QntCeIFwi0JLQtdC60YLQvtGAXCIiLCJUYXhWYXJpYW50IjoiMCIsIkFkZERhdGUiOiIyMDE3LTA4LTI5VDA5OjIxOjA3IiwiT0ZEX0Vycm9yIjoiIiwiT0ZEX051bUVycm9yRG9jIjowLCJPRkRfRGF0ZUVycm9yRG9jIjoiMDAwMS0wMS0wMVQwMDowMDowMCIsIkZOX0RhdGVFbmQiOiIyMDE4LTEyLTEzVDAwOjAwOjAwIiwiRk5fTWVtT3ZlcmZsb3dsIjpmYWxzZSwiRk5fSXNGaXNjYWwiOnRydWUsIlBhcGVyT3ZlciI6ZmFsc2V9XSwiQ29tbWFuZCI6Ikxpc3QiLCJFcnJvciI6IiIsIlN0YXR1cyI6MCwiSWRDb21tYW5kIjoiIn0=
+    http_version: 
+  recorded_at: Wed, 13 Dec 2017 04:55:06 GMT
+- request:
+    method: post
+    uri: http://localhost:5893/Execute
+    body:
+      encoding: UTF-8
+      string: '{"Command":"PaymentCash","NumDevice":3,"IdCommand":"d00d6806-220e-4bd2-9aeb-9fa398970ae6","Amount":0.65,"CashierName":"ООО
+        \"Вектор\"","CashierVATIN":"7701237658"}'
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - rest-client/2.0.2 (linux-gnu x86_64) ruby/2.4.0p0
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '172'
+      Host:
+      - localhost:5893
+      Authorization:
+      - Basic QWRtaW46YWRtaW4=
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Access-Control-Allow-Origin:
+      - "*"
+      Content-Type:
+      - application/json; charset=utf-8
+      Cache-Control:
+      - no-store, no-cache, must-revalidate
+      Content-Length:
+      - '129'
+    body:
+      encoding: UTF-8
+      string: '{"Command":"PaymentCash","Error":"","Status":0,"IdCommand":"d00d6806-220e-4bd2-9aeb-9fa398970ae6","NumDevice":3,"UnitName":"baz"}'
+    http_version: 
+  recorded_at: Wed, 13 Dec 2017 04:55:06 GMT
+recorded_with: VCR 4.0.0

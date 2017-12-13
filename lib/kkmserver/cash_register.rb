@@ -24,6 +24,20 @@ module Kkmserver
       end
     end
 
+    %w[depositing payment].each do |action|
+      define_method("#{action}_cash") do |amount|
+        result = Kkmserver.send_command(
+          "#{action.capitalize}Cash",
+          'NumDevice' => @num_device,
+          'IdCommand' => SecureRandom.uuid,
+          'Amount' => amount.to_f.round(2),
+          'CashierName' => @name_organization,
+          'CashierVATIN' => @inn
+        )
+        result['Status'].zero? ? true : result['Error']
+      end
+    end
+
     def print_check(params)
       raise ArgumentError, 'Sum of payments should be non-zero' unless check_payments(params)
 
