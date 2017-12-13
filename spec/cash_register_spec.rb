@@ -176,4 +176,20 @@ describe Kkmserver::CashRegister do
       end
     end
   end
+
+  describe '#check' do
+    subject { register.check }
+
+    it 'returns a slip' do
+      VCR.use_cassette('get_check') do
+        expect(subject['Slip']).to be_a(String)
+      end
+    end
+
+    it 'returns a check content' do
+      VCR.use_cassette('get_check') do
+        expect(subject['RegisterCheck']).to be_a(Hash)
+      end
+    end
+  end
 end

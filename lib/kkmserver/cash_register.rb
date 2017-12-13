@@ -38,6 +38,22 @@ module Kkmserver
       end
     end
 
+    def check(number = 0, copies = 1)
+      result = Kkmserver.send_command(
+        'GetDataCheck',
+        'NumDevice' => @num_device,
+        'IdCommand' => SecureRandom.uuid,
+        'FiscalNumber' => number,
+        'NumberCopies' => copies
+      )
+
+      if result['Status'].zero?
+        result.select { |k, _v| %w[Slip RegisterCheck].include?(k) }
+      else
+        result['Error']
+      end
+    end
+
     def line_length
       @line_length ||= begin
         result = Kkmserver.send_command(
