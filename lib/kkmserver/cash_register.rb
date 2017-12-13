@@ -10,16 +10,18 @@ module Kkmserver
       end
     end
 
-    def open_shift(print = true)
-      result = Kkmserver.send_command(
-        'OpenShift',
-        'NumDevice' => @num_device,
-        'IdCommand' => SecureRandom.uuid,
-        'NotPrint' => !print,
-        'CashierName' => @name_organization,
-        'CashierVATIN' => @inn
-      )
-      result['Status'].zero? ? result : result['Error']
+    %w[close open].each do |action|
+      define_method("#{action}_shift") do |print = true|
+        result = Kkmserver.send_command(
+          "#{action.capitalize}Shift",
+          'NumDevice' => @num_device,
+          'IdCommand' => SecureRandom.uuid,
+          'NotPrint' => !print,
+          'CashierName' => @name_organization,
+          'CashierVATIN' => @inn
+        )
+        result['Status'].zero? ? result : result['Error']
+      end
     end
 
     def print_check(params)

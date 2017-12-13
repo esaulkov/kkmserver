@@ -28,7 +28,6 @@ describe Kkmserver::CashRegister do
     subject { register.open_shift }
 
     context 'when shift is closed' do
-
       it 'returns check number' do
         VCR.use_cassette('open_shift') do
           expect(subject['CheckNumber']).to be_a(Integer)
@@ -46,6 +45,33 @@ describe Kkmserver::CashRegister do
       it 'returns error message' do
         message = 'Ошибка регистрации ( 60 : ККТ: Смена открыта – операция невозможна )'
         VCR.use_cassette('open_shift_error') do
+          expect(subject).to eq(message)
+        end
+      end
+    end
+  end
+
+  describe '#close_shift' do
+    subject { register.close_shift }
+
+    context 'when shift is open' do
+      it 'returns check number' do
+        VCR.use_cassette('close_shift') do
+          expect(subject['CheckNumber']).to be_a(Integer)
+        end
+      end
+
+      it 'returns shift number' do
+        VCR.use_cassette('close_shift') do
+          expect(subject['SessionNumber']).to be_a(Integer)
+        end
+      end
+    end
+
+    context 'when shift is closed' do
+      it 'returns error message' do
+        message = 'Ошибка регистрации ( 61 : ККТ: Смена не открыта или смена превысила 24 часа – операция невозможна )'
+        VCR.use_cassette('close_shift_error') do
           expect(subject).to eq(message)
         end
       end
