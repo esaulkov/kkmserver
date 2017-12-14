@@ -6,7 +6,36 @@ describe Kkmserver::CashRegister do
 
   describe '#print_check' do
     context 'when check data are valid' do
-      subject { register.print_check(type: 0, cashier_name: 'Ivanov S.A.', electronic: 100) }
+      let(:check_params) do
+        {
+          type: 0,
+          electronic: 301.50,
+          rows: [
+            {'PrintText' => {'Text' => '>#2#<ООО"Рога и копыта"', 'Font' => 1}},
+            {'PrintText' => {'Text' => '<<->>'}},
+            {'PrintText' => {'Text' => 'Пример №1:<#10#>154,41'}},
+            {
+              'PrintText' => {'Text' => 'Тестовый товар', 'Font' => 4, 'Intensity' => 0},
+              'Register' => {
+                'Name' => 'Сапоги женские DF-3099-1',
+                'Quantity' => 3,
+                'Price' => 100.50,
+                'Amount' => 301.50,
+                'Department' => 0,
+                'Tax' => 18,
+                'EAN13' => '1254789547853',
+                'SignMethodCalculation' => 4,
+                'SignCalculationObject' => 1,
+                'MeasurementUnit' => 'пара',
+                'NomenclatureCode' => ''
+              },
+              'BarCode' => {'BarcodeType' => 'EAN13', 'Barcode' => '1254789547853'}
+            }
+          ]
+        }
+      end
+
+      subject { register.print_check(check_params) }
 
       it 'returns check number' do
         VCR.use_cassette('register') do

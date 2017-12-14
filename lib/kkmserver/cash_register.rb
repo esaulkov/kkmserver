@@ -12,40 +12,36 @@ module Kkmserver
 
     %w[close open].each do |action|
       define_method("#{action}_shift") do |print = true|
-        result = Kkmserver.send_command(
-          "#{action.capitalize}Shift",
-          'NumDevice' => @num_device,
-          'IdCommand' => SecureRandom.uuid,
+        params = base_params.merge(
           'NotPrint' => !print,
           'CashierName' => @name_organization,
           'CashierVATIN' => @inn
         )
+        result = Kkmserver.send_command("#{action.capitalize}Shift", params)
+
         result['Status'].zero? ? result : result['Error']
       end
     end
 
     %w[depositing payment].each do |action|
       define_method("#{action}_cash") do |amount|
-        result = Kkmserver.send_command(
-          "#{action.capitalize}Cash",
-          'NumDevice' => @num_device,
-          'IdCommand' => SecureRandom.uuid,
+        params = base_params.merge(
           'Amount' => amount.to_f.round(2),
           'CashierName' => @name_organization,
           'CashierVATIN' => @inn
         )
+        result = Kkmserver.send_command("#{action.capitalize}Cash", params)
+
         result['Status'].zero? ? true : result['Error']
       end
     end
 
     def check(number = 0, copies = 1)
-      result = Kkmserver.send_command(
-        'GetDataCheck',
-        'NumDevice' => @num_device,
-        'IdCommand' => SecureRandom.uuid,
+      params = base_params.merge(
         'FiscalNumber' => number,
         'NumberCopies' => copies
       )
+      result = Kkmserver.send_command('GetDataCheck', params)
 
       if result['Status'].zero?
         result.select { |k, _v| %w[Slip RegisterCheck].include?(k) }
@@ -56,84 +52,75 @@ module Kkmserver
 
     def line_length
       @line_length ||= begin
-        result = Kkmserver.send_command(
-          'GetLineLength',
-          'NumDevice' => @num_device,
-          'IdCommand' => SecureRandom.uuid
-        )
+        result = Kkmserver.send_command('GetLineLength', base_params)
         result['LineLength'] if result['Status'].zero?
       end
     end
 
     def open_cash_drawer
-      result = Kkmserver.send_command(
-        'OpenCashDrawer',
-        'NumDevice' => @num_device,
-        'IdCommand' => SecureRandom.uuid
-      )
+      result = Kkmserver.send_command('OpenCashDrawer', base_params)
       result['Status'].zero? ? true : result['Error']
     end
 
     def print_check(params)
-      raise ArgumentError, 'Sum of payments should be non-zero' unless check_payments(params)
-
       is_fiscal = params[:fiscal].nil? ? true : params[:fiscal]
-      result = Kkmserver.send_command(
-        'RegisterCheck',
-        {
-          'NumDevice' => @num_device,
-          'IdCommand' => SecureRandom.uuid,
-          'IsFiscalCheck' => is_fiscal,
-          'TypeCheck' => params[:type],
-          'NotPrint' => params[:not_print] || false,
-          'NumberCopies' => params[:copies] || 0,
-          'CashierName' => params[:cashier_name],
-          'CashierVATIN' => @inn,
-          'ClientAddress' => '',
-          'TaxVariant' => '',
-          'CheckStrings' => params[:rows],
-          'Cash' => params[:cash].to_f,
-          'ElectronicPayment' => params[:electronic].to_f,
-          'AdvancePayment' => params[:advance].to_f,
-          'Credit' => params[:credit].to_f,
-          'CashProvision' => params[:provision].to_f
-        }
-      )
+      params =  base_params
+                .merge(payments(params))
+                .merge(
+                  'IsFiscalCheck' => is_fiscal,
+                  'TypeCheck' => params[:type],
+                  'NotPrint' => params[:not_print] || false,
+                  'NumberCopies' => params[:copies] || 0,
+                  'CashierName' => @name_organization,
+                  'CashierVATIN' => @inn,
+                  'TaxVariant' => @tax_variant,
+                  'ClientAddress' => '',
+                  'CheckStrings' => params[:rows]
+                )
+      result = Kkmserver.send_command('RegisterCheck', params)
+
       result['Status'].zero? ? result['CheckNumber'] : result['Error']
     end
 
     def state
-      Kkmserver.send_command(
-        'GetDataKKT',
-        'NumDevice' => @num_device,
-        'IdCommand' => SecureRandom.uuid
-      )
+      Kkmserver.send_command('GetDataKKT', base_params)
     end
 
     def x_report
-      result = Kkmserver.send_command(
-        'XReport',
-        'NumDevice' => @num_device,
-        'IdCommand' => SecureRandom.uuid
-      )
+      result = Kkmserver.send_command('XReport', base_params)
       result['Status'].zero? ? true : result['Error']
     end
 
     def z_report
-      result = Kkmserver.send_command(
-        'ZReport',
-        'NumDevice' => @num_device,
-        'IdCommand' => SecureRandom.uuid
-      )
+      result = Kkmserver.send_command('ZReport', base_params)
       result['Status'].zero? ? result : result['Error']
     end
 
     private
 
-    def check_payments(values)
+    def payments(values)
+      raise ArgumentError, 'Sum of payments should be non-zero' unless valid_payment?(values)
+
+      {
+        'Cash' => values[:cash].to_f,
+        'ElectronicPayment' => values[:electronic].to_f,
+        'AdvancePayment' => values[:advance].to_f,
+        'Credit' => values[:credit].to_f,
+        'CashProvision' => values[:provision].to_f
+      }
+    end
+
+    def valid_payment?(values)
       %i[cash electronic advance credit provision].any? do |payment_type|
         values[payment_type].to_f.positive?
       end
+    end
+
+    def base_params
+      {
+        'NumDevice' => @num_device,
+        'IdCommand' => SecureRandom.uuid
+      }
     end
   end
 end
