@@ -6,6 +6,7 @@ require 'json'
 require 'rest-client'
 require 'securerandom'
 require 'kkmserver/cash_register'
+require 'kkmserver/check_row'
 
 module Kkmserver
   URL = ENV['KKMSERVER_URL']
