@@ -10,6 +10,7 @@ require 'kkmserver/check_row'
 
 module Kkmserver
   URL = ENV['KKMSERVER_URL']
+  CREDENTIALS = {user: ENV['KKMSERVER_USER'], password: ENV['KKMSERVER_PASSWORD']}.freeze
 
   def self.list(*filters)
     result = send_command('List', filters)
@@ -24,7 +25,11 @@ module Kkmserver
 
   def self.send_command(command, options = {})
     params = {'Command' => command}.merge(options.to_h)
-    resource = RestClient::Resource.new(Kkmserver::URL, user: 'Admin', password: 'admin')
+    resource = RestClient::Resource.new(
+      Kkmserver::URL,
+      user: Kkmserver::CREDENTIALS[:user],
+      password: Kkmserver::CREDENTIALS[:password]
+    )
     response = resource.post params.to_json, content_type: :json, accept: :json
     JSON.parse(response.body)
   end
