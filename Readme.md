@@ -2,6 +2,14 @@
 
 A Ruby wrapper for the [Kkmserver API](https://kkmserver.ru/KkmServer#Primer).
 
+## After install
+Be sure to create `.env` file with environment variables:
+```
+KKMSERVER_URL=
+KKMSERVER_USER=
+KKMSERVER_PASSWORD=
+```
+
 ## Using
 #### Getting the list of devices on the server
 ```ruby
