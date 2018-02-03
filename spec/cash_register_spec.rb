@@ -39,7 +39,8 @@ describe Kkmserver::CashRegister do
 
       it 'returns check number' do
         VCR.use_cassette('register') do
-          expect(subject).to be_a(Integer)
+          expect(subject).to be_a(Hash)
+          expect(subject.key?('CheckNumber')).to be_truthy
         end
       end
     end
@@ -74,7 +75,7 @@ describe Kkmserver::CashRegister do
       it 'returns error message' do
         message = 'Ошибка регистрации ( 60 : ККТ: Смена открыта – операция невозможна )'
         VCR.use_cassette('open_shift_error') do
-          expect(subject).to eq(message)
+          expect(subject['Error']).to eq(message)
         end
       end
     end
@@ -101,7 +102,8 @@ describe Kkmserver::CashRegister do
       it 'returns error message' do
         message = 'Ошибка регистрации ( 61 : ККТ: Смена не открыта или смена превысила 24 часа – операция невозможна )'
         VCR.use_cassette('close_shift_error') do
-          expect(subject).to eq(message)
+          expect(subject.key?('Error')).to be_truthy
+          expect(subject['Error']).to eq(message)
         end
       end
     end
@@ -111,9 +113,9 @@ describe Kkmserver::CashRegister do
     subject { register.depositing_cash(1.01) }
 
     context 'when shift is open' do
-      it 'returns true' do
+      it 'returns zero state' do
         VCR.use_cassette('depositing_cash') do
-          expect(subject).to be_truthy
+          expect(subject['Status']).to eq(0)
         end
       end
     end
@@ -122,7 +124,7 @@ describe Kkmserver::CashRegister do
       it 'returns error message' do
         message = 'Ошибка регистрации ( 61 : ККТ: Смена не открыта или смена превысила 24 часа – операция невозможна )'
         VCR.use_cassette('depositing_cash_error') do
-          expect(subject).to eq(message)
+          expect(subject['Error']).to eq(message)
         end
       end
     end
@@ -132,9 +134,9 @@ describe Kkmserver::CashRegister do
     subject { register.payment_cash(0.65) }
 
     context 'when shift is open' do
-      it 'returns true' do
+      it 'returns zero state' do
         VCR.use_cassette('payment_cash') do
-          expect(subject).to be_truthy
+          expect(subject['Status']).to eq(0)
         end
       end
     end
@@ -143,7 +145,7 @@ describe Kkmserver::CashRegister do
       it 'returns error message' do
         message = 'Ошибка регистрации ( 61 : ККТ: Смена не открыта или смена превысила 24 часа – операция невозможна )'
         VCR.use_cassette('payment_cash_error') do
-          expect(subject).to eq(message)
+          expect(subject['Error']).to eq(message)
         end
       end
     end
@@ -152,9 +154,9 @@ describe Kkmserver::CashRegister do
   describe '#x_report' do
     subject { register.x_report }
 
-    it 'returns true' do
+    it 'returns zero state' do
       VCR.use_cassette('x_report') do
-        expect(subject).to be_truthy
+        expect(subject['Status']).to eq(0)
       end
     end
   end
@@ -180,7 +182,7 @@ describe Kkmserver::CashRegister do
       it 'returns error message' do
         message = 'Ошибка регистрации ( 61 : ККТ: Смена не открыта или смена превысила 24 часа – операция невозможна )'
         VCR.use_cassette('z_report_error') do
-          expect(subject).to eq(message)
+          expect(subject['Error']).to eq(message)
         end
       end
     end
@@ -189,9 +191,9 @@ describe Kkmserver::CashRegister do
   describe '#open_cash_drawer' do
     subject { register.open_cash_drawer }
 
-    it 'returns true' do
+    it 'returns zero state' do
       VCR.use_cassette('open_cash_drawer') do
-        expect(subject).to be_truthy
+        expect(subject['Status']).to eq(0)
       end
     end
   end

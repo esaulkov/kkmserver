@@ -17,9 +17,7 @@ module Kkmserver
           'CashierName' => @name_organization,
           'CashierVATIN' => @inn
         )
-        result = Kkmserver.send_command("#{action.capitalize}Shift", params)
-
-        result['Status'].zero? ? result : result['Error']
+        Kkmserver.send_command("#{action.capitalize}Shift", params)
       end
     end
 
@@ -30,9 +28,7 @@ module Kkmserver
           'CashierName' => @name_organization,
           'CashierVATIN' => @inn
         )
-        result = Kkmserver.send_command("#{action.capitalize}Cash", params)
-
-        result['Status'].zero? ? true : result['Error']
+        Kkmserver.send_command("#{action.capitalize}Cash", params)
       end
     end
 
@@ -41,13 +37,7 @@ module Kkmserver
         'FiscalNumber' => number,
         'NumberCopies' => copies
       )
-      result = Kkmserver.send_command('GetDataCheck', params)
-
-      if result['Status'].zero?
-        result.select { |k, _v| %w[Slip RegisterCheck].include?(k) }
-      else
-        result['Error']
-      end
+      Kkmserver.send_command('GetDataCheck', params)
     end
 
     def line_length
@@ -58,8 +48,7 @@ module Kkmserver
     end
 
     def open_cash_drawer
-      result = Kkmserver.send_command('OpenCashDrawer', base_params)
-      result['Status'].zero? ? true : result['Error']
+      Kkmserver.send_command('OpenCashDrawer', base_params)
     end
 
     def print_check(params)
@@ -77,9 +66,7 @@ module Kkmserver
                   'ClientAddress' => '',
                   'CheckStrings' => params[:rows]
                 )
-      result = Kkmserver.send_command('RegisterCheck', params)
-
-      result['Status'].zero? ? result['CheckNumber'] : result['Error']
+      Kkmserver.send_command('RegisterCheck', params)
     end
 
     def state
@@ -87,13 +74,11 @@ module Kkmserver
     end
 
     def x_report
-      result = Kkmserver.send_command('XReport', base_params)
-      result['Status'].zero? ? true : result['Error']
+      Kkmserver.send_command('XReport', base_params)
     end
 
     def z_report
-      result = Kkmserver.send_command('ZReport', base_params)
-      result['Status'].zero? ? result : result['Error']
+      Kkmserver.send_command('ZReport', base_params)
     end
 
     private
